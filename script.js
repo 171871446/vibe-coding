@@ -1,104 +1,47 @@
-/* =====================================================
-   光影志 - 交互脚本
-   ===================================================== */
-
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化预加载器
-    initPreloader();
-
-    // 初始化自定义光标
-    initCursor();
-
-    // 初始化导航栏
+    hidePreloader();
     initNavbar();
-
-    // 初始化移动端导航
     initMobileNav();
-
-    // 初始化作品筛选
-    initWorksFilter();
-
-    // 初始化滚动动画
     initScrollAnimations();
-
-    // 初始化数字动画
-    initCountUp();
-
-    // 初始化视差效果
+    initScrollProgress();
     initParallax();
+    initBlog();
+    initCarousel();
 });
 
-/* 预加载器 */
-function initPreloader() {
-    const preloader = document.querySelector('.preloader');
-
+/* 隐藏加载动画 */
+function hidePreloader() {
+    var preloader = document.getElementById('preloader');
+    if (!preloader) return;
     window.addEventListener('load', function() {
         setTimeout(function() {
-            preloader.classList.add('hidden');
-        }, 1800);
+            preloader.classList.add('hide');
+        }, 600);
     });
+    // 备用：3秒后自动隐藏
+    setTimeout(function() {
+        preloader.classList.add('hide');
+    }, 3000);
 }
 
-/* 自定义光标 */
-function initCursor() {
-    const cursor = document.querySelector('.cursor');
-    const follower = document.querySelector('.cursor-follower');
-
-    if (!cursor || !follower) return;
-
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    let followerX = 0, followerY = 0;
-
-    document.addEventListener('mousemove', function(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    function animate() {
-        // 光标跟随
-        cursorX += (mouseX - cursorX) * 0.2;
-        cursorY += (mouseY - cursorY) * 0.2;
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-
-        // 跟随器
-        followerX += (mouseX - followerX) * 0.1;
-        followerY += (mouseY - followerY) * 0.1;
-        follower.style.left = followerX + 'px';
-        follower.style.top = followerY + 'px';
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    // 隐藏默认光标
-    document.body.style.cursor = 'none';
-}
-
-/* 导航栏滚动效果 */
+/* 导航栏 */
 function initNavbar() {
     const navbar = document.querySelector('.navbar');
 
     window.addEventListener('scroll', function() {
-        if (window.scrollY > 100) {
+        if (window.scrollY > 80) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
     });
 
-    // 平滑滚动到锚点
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     });
@@ -108,7 +51,6 @@ function initNavbar() {
 function initMobileNav() {
     const toggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
-
     if (!toggle || !navLinks) return;
 
     toggle.addEventListener('click', function() {
@@ -117,7 +59,6 @@ function initMobileNav() {
         document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
     });
 
-    // 点击链接后关闭菜单
     navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function() {
             navLinks.classList.remove('active');
@@ -127,179 +68,294 @@ function initMobileNav() {
     });
 }
 
-/* 作品筛选 */
-function initWorksFilter() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const workItems = document.querySelectorAll('.work-item');
+/* 分页器交互 */
+function initPagination() {
+    const dots = document.querySelectorAll('.page-dot');
+    const items = document.querySelectorAll('.selection-item');
+    if (!dots.length || !items.length) return;
 
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // 更新按钮状态
-            filterBtns.forEach(b => b.classList.remove('active'));
+    const perPage = 3;
+    const totalPages = Math.ceil(items.length / perPage);
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+            dots.forEach(d => d.classList.remove('active'));
             this.classList.add('active');
 
-            const filter = this.dataset.filter;
-
-            // 筛选作品
-            workItems.forEach((item, index) => {
-                if (filter === 'all' || item.dataset.category === filter) {
-                    item.style.display = 'block';
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
-                    }, index * 50);
+            items.forEach((item, i) => {
+                const page = Math.floor(i / perPage);
+                if (page === index) {
+                    item.style.display = '';
+                    setTimeout(() => item.classList.add('visible'), 50);
                 } else {
-                    item.style.opacity = '0';
-                    item.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        item.style.display = 'none';
-                    }, 400);
+                    item.classList.remove('visible');
+                    setTimeout(() => { item.style.display = 'none'; }, 300);
                 }
             });
         });
     });
+
+    // 触发第一页
+    if (dots[0]) dots[0].click();
 }
 
 /* 滚动动画 */
 function initScrollAnimations() {
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
+    window.blogObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, index * 100);
-                observer.unobserve(entry.target);
+                entry.target.classList.add('visible');
+                window.blogObserver.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    // 观察作品项
-    document.querySelectorAll('.work-item').forEach((el, index) => {
-        el.style.transitionDelay = `${index * 0.1}s`;
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-
-    // 观察其他元素
-    document.querySelectorAll('.about-image, .about-content, .contact-content, .about-header, .works-header, .contact-header').forEach(el => {
-        el.classList.add('fade-in');
-        observer.observe(el);
+    document.querySelectorAll(
+        '.selection-item, .section-title, ' +
+        '.story-lead, .story-body, .story-image, ' +
+        '.contact-text, .contact-email, .section-num, ' +
+        '.gallery-scroll-controls, .blog-entry, .blog-title, .blog-excerpt, .blog-date'
+    ).forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+        window.blogObserver.observe(el);
     });
 }
 
-/* 数字递增动画 */
-function initCountUp() {
-    const stats = document.querySelectorAll('.stat-number');
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                const count = parseInt(target.dataset.count);
-                animateNumber(target, count);
-                observer.unobserve(target);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    stats.forEach(stat => observer.observe(stat));
+/* 视差滚动 - 停用以保证 GIF 清晰度 */
+function initParallax() {
+    // 留空，需要时可开启
 }
 
-function animateNumber(element, target) {
-    let current = 0;
-    const duration = 2000;
-    const step = target / (duration / 16);
+/* 相册滚动 */
+function initCarousel() {
+    var STORAGE_KEY = 'derbao_photos';
+    var defaultPhotos = [
+        { src: 'images/ba5585814c8afe949d10e248d6f07df5.jpg' },
+        { src: 'images/62fbd4896ac0556d18c6f78f117269ad.jpg' },
+        { src: 'images/c1aaf470cec4f02001325e9881ab44fc.jpg' },
+        { src: 'images/e91057f28d7735e505381f424f31d117.jpg' },
+        { src: 'images/fa66a4e45444c9ad9c9c4d1bc61fbfef.jpg' },
+        { src: 'images/下载(1).jpg' }
+    ];
 
-    function update() {
-        current += step;
-        if (current < target) {
-            element.textContent = Math.floor(current);
-            requestAnimationFrame(update);
-        } else {
-            element.textContent = target;
+    var track = document.getElementById('gallery-scroll-track');
+    var playBtn = document.getElementById('gallery-scroll-play');
+    var editBtn = document.getElementById('gallery-scroll-edit');
+    var scrollEl = document.getElementById('gallery-scroll');
+
+    if (!track) return;
+
+    var photos = [];
+    var isPlaying = true;
+
+    function loadPhotos() {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) { try { photos = JSON.parse(saved); } catch(e) { photos = defaultPhotos.slice(); } }
+        else { photos = defaultPhotos.slice(); }
+        if (!photos.length) photos = defaultPhotos.slice();
+    }
+
+    function savePhotos() { localStorage.setItem(STORAGE_KEY, JSON.stringify(photos)); }
+    function esc(s) { var d = document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+    function renderTrack() {
+        if (!photos.length) { track.innerHTML = '<p style="padding:2rem;text-align:center;color:var(--text-muted);font-weight:300;">暂无照片，点击"管理相册"添加</p>'; return; }
+        // 渲染两遍实现无缝循环
+        var html = '';
+        for (var repeat = 0; repeat < 2; repeat++) {
+            for (var i = 0; i < photos.length; i++) {
+                html += '<div class="gallery-scroll-item"><img src="' + esc(photos[i].src) + '" alt=""></div>';
+            }
+        }
+        track.innerHTML = html;
+    }
+
+    function togglePlay(play) {
+        isPlaying = play !== undefined ? play : !isPlaying;
+        if (playBtn) playBtn.textContent = isPlaying ? '⏸' : '▶';
+        track.style.animationPlayState = isPlaying ? 'running' : 'paused';
+    }
+
+    // 播放按钮
+    if (playBtn) playBtn.addEventListener('click', function() { togglePlay(); });
+
+    // 悬停暂停
+    if (scrollEl) {
+        scrollEl.addEventListener('mouseenter', function() { if (isPlaying) track.style.animationPlayState = 'paused'; });
+        scrollEl.addEventListener('mouseleave', function() { if (isPlaying) track.style.animationPlayState = 'running'; });
+    }
+
+    // 管理弹窗
+    var modal = document.getElementById('gallery-modal');
+    var closeBtn = document.getElementById('gallery-modal-close');
+    var manageList = document.getElementById('gallery-manage-list');
+    var addInput = document.getElementById('gallery-add-input');
+    var addBtn = document.getElementById('gallery-add-btn');
+
+    if (editBtn) editBtn.addEventListener('click', function() { renderManageList(); modal.classList.add('active'); });
+    if (closeBtn) closeBtn.addEventListener('click', function() { modal.classList.remove('active'); });
+    if (modal) modal.addEventListener('click', function(e) { if (e.target === modal) modal.classList.remove('active'); });
+
+    function renderManageList() {
+        if (!manageList) return;
+        var html = '';
+        for (var i = 0; i < photos.length; i++)
+            html += '<div class="gallery-manage-item"><img src="' + esc(photos[i].src) + '" alt=""><span class="gmi-label">照片 ' + (i+1) + '</span><button class="gmi-del" data-index="' + i + '">&times;</button></div>';
+        manageList.innerHTML = html;
+        manageList.querySelectorAll('.gmi-del').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var idx = parseInt(this.getAttribute('data-index'));
+                photos.splice(idx, 1); savePhotos();
+                renderManageList(); renderTrack();
+            });
+        });
+    }
+
+    if (addBtn && addInput) {
+        addBtn.addEventListener('click', function() {
+            var val = addInput.value.trim(); if (!val) return;
+            var src = val.indexOf('/') === -1 && val.indexOf('\\') === -1 && val.indexOf('.') > 0 ? 'images/' + val : val;
+            photos.push({ src: src }); savePhotos(); addInput.value = ''; renderManageList(); renderTrack();
+        });
+        addInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') addBtn.click(); });
+    }
+
+    loadPhotos(); renderTrack();
+}
+
+/* 博客管理 */
+function initBlog() {
+    var list = document.getElementById('blog-list');
+    var addBtn = document.getElementById('blog-add-btn');
+    var modal = document.getElementById('blog-modal');
+    var closeBtn = document.querySelector('.blog-modal-close');
+    var saveBtn = document.getElementById('blog-save-btn');
+    var dateInput = document.getElementById('blog-input-date');
+    var titleInput = document.getElementById('blog-input-title');
+    var contentInput = document.getElementById('blog-input-content');
+
+    if (!list) return;
+
+    var STORAGE_KEY = 'derbao_blog_posts';
+
+    var defaultPosts = [
+        { date: '2025.03.21', title: '春分日', content: '天气开始慢慢回暖了。窗外的树冒了新芽，早晨的阳光照进房间的角度也渐渐变得柔和。冲了一杯热茶，坐在窗边发呆，觉得这样的日子也很好。' },
+        { date: '2025.02.14', title: '最近在听什么', content: '这一周循环播放的是菅野洋子的旧专辑。每首曲子都像在讲述一个故事，做饭的时候、走路的时候、看书的时候，背景音让日常多了些电影感。' },
+        { date: '2025.01.08', title: '年末整理', content: '趁着假期把书桌和书架重新整理了一遍。丢掉了一些不再需要的东西，把常用的物件放在顺手的位置。整理完坐下来，觉得空气都清新了一些。新的一年，从整理开始。' },
+        { date: '2024.12.15', title: '冬日的治愈食物', content: '天冷的时候总想吃点热乎的。最近爱上了自己煮味噌汤，白味噌打底，加豆腐、海带和一点葱花。捧着碗的时候，掌心都是暖的。简单的东西往往最治愈。' }
+    ];
+
+    function getPosts() {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try { return JSON.parse(saved); } catch(e) { return defaultPosts; }
+        }
+        return defaultPosts;
+    }
+
+    function savePosts(posts) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    }
+
+    function renderPosts() {
+        var posts = getPosts();
+        var html = '';
+        for (var i = 0; i < posts.length; i++) {
+            html +=
+                '<article class="blog-entry" data-index="' + i + '">' +
+                    '<time class="blog-date">' + escHtml(posts[i].date) + '</time>' +
+                    '<div class="blog-content">' +
+                        '<h3 class="blog-title">' + escHtml(posts[i].title) + '</h3>' +
+                        '<p class="blog-excerpt">' + escHtml(posts[i].content) + '</p>' +
+                    '</div>' +
+                    '<button class="blog-del-btn" data-index="' + i + '">&times;</button>' +
+                '</article>';
+        }
+        list.innerHTML = html;
+
+        // 删除事件
+        list.querySelectorAll('.blog-del-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                var idx = parseInt(this.getAttribute('data-index'));
+                var posts = getPosts();
+                posts.splice(idx, 1);
+                savePosts(posts);
+                renderPosts();
+                e.stopPropagation();
+            });
+        });
+
+        // 重新触发滚动动画
+        if (window.blogObserver) {
+            list.querySelectorAll('.blog-entry, .blog-title, .blog-excerpt, .blog-date').forEach(function(el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+                window.blogObserver.observe(el);
+            });
         }
     }
 
-    update();
-}
+    function escHtml(str) {
+        var d = document.createElement('div');
+        d.appendChild(document.createTextNode(str));
+        return d.innerHTML;
+    }
 
-/* 视差效果 */
-function initParallax() {
-    const heroImage = document.querySelector('.hero-image');
-
-    if (!heroImage) return;
-
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const rate = scrolled * 0.3;
-
-        if (scrolled < window.innerHeight) {
-            heroImage.style.transform = `scale(1) translateY(${rate}px)`;
-        }
-    });
-}
-
-/* 图片懒加载 */
-function initLazyLoad() {
-    const images = document.querySelectorAll('img[data-src]');
-
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                imageObserver.unobserve(img);
-            }
+    // 添加按钮 - 打开弹窗
+    if (addBtn) {
+        addBtn.addEventListener('click', function() {
+            dateInput.value = '';
+            titleInput.value = '';
+            contentInput.value = '';
+            modal.classList.add('active');
         });
-    });
+    }
 
-    images.forEach(img => imageObserver.observe(img));
+    // 关闭弹窗
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+    }
+
+    // 点击遮罩关闭
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+    }
+
+    // 保存新文章
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+            var date = dateInput.value.trim();
+            var title = titleInput.value.trim();
+            var content = contentInput.value.trim();
+            if (!date || !title || !content) { alert('请填写完整'); return; }
+            var posts = getPosts();
+            posts.unshift({ date: date, title: title, content: content });
+            savePosts(posts);
+            renderPosts();
+            modal.classList.remove('active');
+        });
+    }
+
+    // 初始渲染
+    renderPosts();
 }
 
-/* 滚动进度指示器 */
+/* 滚动进度条 */
 function initScrollProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.className = 'scroll-progress';
-    progressBar.innerHTML = '<div class="scroll-progress-bar"></div>';
-    document.body.appendChild(progressBar);
-
-    const bar = progressBar.querySelector('.scroll-progress-bar');
+    const bar = document.createElement('div');
+    bar.style.cssText = 'position:fixed;top:0;left:0;height:1px;background:#a89880;z-index:200;width:0;transition:width 0.1s ease;pointer-events:none;';
+    document.body.appendChild(bar);
 
     window.addEventListener('scroll', function() {
         const scrollTop = window.pageYOffset;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        bar.style.width = scrollPercent + '%';
+        bar.style.width = (scrollTop / docHeight) * 100 + '%';
     });
 }
-
-// 添加滚动进度条样式
-const progressStyle = document.createElement('style');
-progressStyle.textContent = `
-    .scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: transparent;
-        z-index: 10000;
-    }
-    .scroll-progress-bar {
-        height: 100%;
-        background: var(--color-accent);
-        width: 0;
-        transition: width 0.1s ease;
-    }
-`;
-document.head.appendChild(progressStyle);
-
-// 初始化滚动进度
-document.addEventListener('DOMContentLoaded', initScrollProgress);

@@ -3,315 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>der包 · 个人空间
+    <title>der包 · 生活誌</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 预加载器 -->
-    <div class="preloader">
-        <div class="preloader-inner">
-            <div class="preloader-text">载入中</div>
-            <div class="preloader-bar"></div>
+
+    <!-- 加载动画 -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-sun">
+            <div class="sun-face">
+                <div class="sun-eye eye-l"></div>
+                <div class="sun-eye eye-r"></div>
+                <div class="sun-mouth"></div>
+            </div>
+            <div class="sun-ray r1"></div>
+            <div class="sun-ray r2"></div>
+            <div class="sun-ray r3"></div>
+            <div class="sun-ray r4"></div>
+            <div class="sun-ray r5"></div>
+            <div class="sun-ray r6"></div>
+            <div class="sun-ray r7"></div>
+            <div class="sun-ray r8"></div>
         </div>
+        <div class="preloader-cloud c1"></div>
+        <div class="preloader-cloud c2"></div>
+        <p class="preloader-text">加载中<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
     </div>
 
-    <!-- 鼠标跟随光标 -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
+    <!-- 背景 -->
+    <img class="page-bg" src="images/3aa46f5701fc6ed92234ea0a9f86e2cd.gif" alt="">
+    <div class="page-overlay"></div>
 
-    <!-- 导航栏 -->
+    <!-- 导航 -->
     <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">
-                <span class="logo-text">der包</span>
-            </a>
+        <div class="nav-inner">
+            <a href="#home" class="nav-logo">der包</a>
             <ul class="nav-links">
-                <li><a href="#about" data-text="关于">关于</a></li>
-                <li><a href="#works" data-text="作品">作品</a></li>
-                <li><a href="#contact" data-text="联系">联系</a></li>
+                <li><a href="#story">故事</a></li>
+                <li><a href="#selection">精选</a></li>
+                <li><a href="#gallery">相册</a></li>
+                <li><a href="#blog">博客</a></li>
+                <li><a href="#contact">联系</a></li>
             </ul>
-            <button class="nav-toggle" aria-label="菜单">
-                <span></span>
-                <span></span>
+            <button class="nav-toggle">
+                <span></span><span></span>
             </button>
         </div>
     </nav>
 
-    <!-- Hero区域 -->
+    <!-- Hero -->
     <section id="home" class="hero">
-        <div class="hero-bg">
-            <img src="图片/ba5585814c8afe949d10e248d6f07df5.jpg" alt="背景" class="hero-image">
-            <div class="hero-overlay"></div>
-        </div>
         <div class="hero-content">
-            <div class="hero-subtitle-wrap">
-                <span class="hero-subtitle">der包 · 创意空间</span>
-            </div>
+            <p class="hero-label">舒适的生活</p>
             <h1 class="hero-title">
-                <span class="title-line">欢迎来到</span>
-                <span class="title-line">der包的</span>
-                <span class="title-line accent">小世界</span>
+                <span class="hero-name">der包</span>
             </h1>
-            <div class="hero-scroll">
-                <span class="scroll-text">向下探索</span>
-                <div class="scroll-line">
-                    <div class="scroll-dot"></div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-side-text">
-            <span>SCROLL TO EXPLORE</span>
+            <p class="hero-desc">在每一天的生活中，发现微小而确实的美好。</p>
         </div>
     </section>
 
-    <!-- 关于我 -->
-    <section id="about" class="about">
-        <div class="about-bg-text">ABOUT</div>
+    <!-- Story -->
+    <section id="story" class="story">
         <div class="container">
-            <div class="about-header">
-                <span class="section-label">01</span>
-                <h2 class="section-title">关于我</h2>
-            </div>
-            <div class="about-grid">
-                <div class="about-image">
-                    <div class="about-image-frame">
-                        <div class="about-image-placeholder">
-                            <span>你的照片</span>
-                        </div>
-                        <div class="about-image-border"></div>
-                    </div>
-                    <div class="about-image-caption">
-                        <span class="caption-year">2019 - 至今</span>
-                        <span class="caption-text">持续创作中</span>
+            <span class="section-num">01</span>
+            <h2 class="section-title">故事</h2>
+            <div class="story-layout">
+                <div class="story-image">
+                    <div class="circle-img">
+                        <img src="images/ba5585814c8afe949d10e248d6f07df5.jpg" alt="暮らし">
                     </div>
                 </div>
-                <div class="about-content">
-                    <p class="about-intro">
-                        你好，我是<span class="highlight">der包</span>。
-                        <br>一个喜欢折腾各种有趣东西的人。
-                    </p>
-                    <div class="about-divider"></div>
-                    <p class="about-text">
-                        这里是我的小小空间，记录着我感兴趣的一切——
-                        好用的工具、踩过的坑、生活中的小发现，
-                        还有那些让人觉得"哇，原来还可以这样"的瞬间。
-                    </p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <span class="stat-number" data-count="30">0</span>
-                            <span class="stat-label">文章</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number" data-count="50">0</span>
-                            <span class="stat-label">项目</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number" data-count="3">0</span>
-                            <span class="stat-label">年折腾</span>
-                        </div>
-                    </div>
-                    <a href="#works" class="btn-primary">
-                        <span>浏览作品</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
+                <div class="story-text">
+                    <p class="story-lead">在日常之中，<br>发现那微小而确实的美好。</p>
+                    <div class="dotted-divider"></div>
+                    <p class="story-body">这里记录着一个学生日常生活中的小小发现——好用的器物、温暖的瞬间、让人安心的习惯。在忙碌的日子里，寻找那些让心变得柔软的事物。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 作品集 -->
-    <section id="works" class="works">
-        <div class="works-bg-text">WORKS</div>
+    <!-- Selection -->
+    <section id="selection" class="selection">
         <div class="container">
-            <div class="works-header">
-                <span class="section-label">02</span>
-                <h2 class="section-title">作品集</h2>
-                <p class="section-desc">一些做过的东西，和一些想说的话</p>
-
-            <div class="works-filter">
-                <button class="filter-btn active" data-filter="all">全部</button>
-                <button class="filter-btn" data-filter="project">项目</button>
-                <button class="filter-btn" data-filter="note">随笔</button>
+            <span class="section-num">01</span>
+            <h2 class="section-title">精选</h2>
+            <div class="selection-grid">
+                <div class="selection-item">
+                    <div class="selection-img">
+                        <img src="images/ba5585814c8afe949d10e248d6f07df5.jpg" alt="01">
+                    </div>
+                    <p class="selection-label">生活</p>
+                </div>
+                <div class="selection-item">
+                    <div class="selection-img">
+                        <img src="images/c1aaf470cec4f02001325e9881ab44fc.jpg" alt="02">
+                    </div>
+                    <p class="selection-label">风景</p>
+                </div>
+                <div class="selection-item">
+                    <div class="selection-img">
+                        <img src="images/62fbd4896ac0556d18c6f78f117269ad.jpg" alt="03">
+                    </div>
+                    <p class="selection-label">好物</p>
+                </div>
+                <div class="selection-item">
+                    <div class="selection-img">
+                        <img src="images/e91057f28d7735e505381f424f31d117.jpg" alt="04">
+                    </div>
+                    <p class="selection-label">日常</p>
+                </div>
+                <div class="selection-item">
+                    <div class="selection-img">
+                        <img src="images/fa66a4e45444c9ad9c9c4d1bc61fbfef.jpg" alt="05">
+                    </div>
+                    <p class="selection-label">旅行</p>
+                </div>
+                <div class="selection-item">
+                    <div class="selection-img">
+                        <img src="images/下载(1).jpg" alt="06">
+                    </div>
+                    <p class="selection-label">宁静</p>
+                </div>
             </div>
-
-            <div class="works-grid">
-                <!-- 作品1 -->
-                <article class="work-item" data-category="project">
-                    <div class="work-image">
-                        <div class="work-placeholder project">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                            </svg>
-                        </div>
-                        <div class="work-overlay">
-                            <span class="work-category">项目</span>
-                            <span class="work-year">2024</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <h3 class="work-title">个人主页构建记</h3>
-                        <p class="work-date">2024年4月</p>
-                        <p class="work-desc">从零开始搭建这个个人空间，记录过程中的思考与选择。</p>
-                    </div>
-                </article>
-
-                <!-- 作品2 -->
-                <article class="work-item" data-category="note">
-                    <div class="work-image">
-                        <div class="work-placeholder note">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                            </svg>
-                        </div>
-                        <div class="work-overlay">
-                            <span class="work-category">随笔</span>
-                            <span class="work-year">2024</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <h3 class="work-title">关于效率工具的一点思考</h3>
-                        <p class="work-date">2024年3月</p>
-                        <p class="work-desc">工具越多真的越高效吗？分享我精简工作流的心得。</p>
-                    </div>
-                </article>
-
-                <!-- 作品3 -->
-                <article class="work-item" data-category="project">
-                    <div class="work-image">
-                        <div class="work-placeholder project">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                            </svg>
-                        </div>
-                        <div class="work-overlay">
-                            <span class="work-category">项目</span>
-                            <span class="work-year">2024</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <h3 class="work-title">自动化小工具</h3>
-                        <p class="work-date">2024年2月</p>
-                        <p class="work-desc">写了一个小脚本，让重复的工作自动完成，省下时间做更有趣的事。</p>
-                    </div>
-                </article>
-
-                <!-- 作品4 -->
-                <article class="work-item" data-category="note">
-                    <div class="work-image">
-                        <div class="work-placeholder note">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                            </svg>
-                        </div>
-                        <div class="work-overlay">
-                            <span class="work-category">随笔</span>
-                            <span class="work-year">2024</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <h3 class="work-title">慢下来，才能看见</h3>
-                        <p class="work-date">2024年3月</p>
-                        <p class="work-desc">生活节奏越快，越需要刻意放慢脚步，去注意那些被忽略的细节。</p>
-                    </div>
-                </article>
-
-                <!-- 作品5 -->
-                <article class="work-item" data-category="project">
-                    <div class="work-image">
-                        <div class="work-placeholder project">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                            </svg>
-                        </div>
-                        <div class="work-overlay">
-                            <span class="work-category">项目</span>
-                            <span class="work-year">2024</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <h3 class="work-title">命令行工具箱</h3>
-                        <p class="work-date">2024年1月</p>
-                        <p class="work-desc">整理了一份常用命令行工具的清单和配置分享。</p>
-                    </div>
-                </article>
-
-                <!-- 作品6 -->
-                <article class="work-item" data-category="note">
-                    <div class="work-image">
-                        <div class="work-placeholder note">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                            </svg>
-                        </div>
-                        <div class="work-overlay">
-                            <span class="work-category">随笔</span>
-                            <span class="work-year">2024</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <h3 class="work-title">我的桌面布置分享</h3>
-                        <p class="work-date">2024年3月</p>
-                        <p class="work-desc">一个好的工作环境，能让人更容易进入心流状态。</p>
-                    </div>
-                </article>
+            <!-- 分页器 -->
+            <div class="pagination">
+                <span class="page-dot active"></span>
+                <span class="page-dot"></span>
+                <span class="page-dot"></span>
             </div>
         </div>
     </section>
 
-    <!-- 联系 -->
+    <!-- Gallery -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <span class="section-num">02</span>
+            <h2 class="section-title">相册</h2>
+            <div class="gallery-scroll" id="gallery-scroll">
+                <div class="gallery-scroll-track" id="gallery-scroll-track"></div>
+            </div>
+            <div class="gallery-scroll-controls">
+                <button class="carousel-btn" id="gallery-scroll-play">⏸</button>
+                <button class="carousel-btn" id="gallery-scroll-edit">管理相册</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 管理相册弹窗 -->
+    <div id="gallery-modal" class="blog-modal">
+        <div class="blog-modal-content">
+            <span class="blog-modal-close" id="gallery-modal-close">&times;</span>
+            <h3 class="blog-modal-title">管理相册</h3>
+            <div class="gallery-manage-list" id="gallery-manage-list"></div>
+            <div class="gallery-add-row">
+                <input id="gallery-add-input" class="blog-input" type="text" placeholder="输入图片URL">
+                <button id="gallery-add-btn" class="blog-save-btn" style="width:auto;padding:0.8rem 1.5rem;flex-shrink:0;">添加</button>
+            </div>
+            <p class="gallery-hint">支持网络图片链接，或 images/ 目录下的文件名</p>
+        </div>
+    </div>
+
+    <!-- Blog -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <span class="section-num">03</span>
+            <h2 class="section-title">博客</h2>
+            <div id="blog-list" class="blog-list">
+                <!-- JS动态渲染 -->
+            </div>
+            <button id="blog-add-btn" class="blog-add-btn">＋ 写新文章</button>
+
+            <!-- 写文章弹窗 -->
+            <div id="blog-modal" class="blog-modal">
+                <div class="blog-modal-content">
+                    <span class="blog-modal-close">&times;</span>
+                    <h3 class="blog-modal-title">写新文章</h3>
+                    <input id="blog-input-date" class="blog-input" type="text" placeholder="日期 (如 2025.04.25)">
+                    <input id="blog-input-title" class="blog-input" type="text" placeholder="标题">
+                    <textarea id="blog-input-content" class="blog-textarea" placeholder="正文内容..." rows="5"></textarea>
+                    <button id="blog-save-btn" class="blog-save-btn">发布</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
     <section id="contact" class="contact">
-        <div class="contact-bg-text">CONTACT</div>
         <div class="container">
-            <div class="contact-header">
-                <span class="section-label">03</span>
-                <h2 class="section-title">联系我</h2>
-            </div>
-            <div class="contact-content">
-                <p class="contact-text">
-                    有任何想法或问题，<br>欢迎随时来找我聊聊。
-                </p>
-                <a href="mailto:171871446@qq.com" class="btn-primary large">
-                    <span>发送邮件</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-                <div class="social-links">
-                    <a href="#" class="social-link">
-                        <span>GitHub</span>
-                    </a>
-                    <a href="#" class="social-link">
-                        <span>微博</span>
-                    </a>
-                    <a href="#" class="social-link">
-                        <span>B站</span>
-                    </a>
-                </div>
+            <span class="section-num">04</span>
+            <h2 class="section-title">联系</h2>
+            <p class="contact-text">如有任何问题，欢迎随时联系我。</p>
+            <a href="mailto:171871446@qq.com" class="contact-email">171871446@qq.com</a>
+            <div class="social-links">
+                <a href="https://www.douyin.com/user/40298850025" target="_blank" class="social-link">抖音</a>
             </div>
         </div>
     </section>
 
-    <!-- 底部 -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <span class="footer-logo">der包</span>
-                <p class="footer-text">&copy; 2024 All rights reserved.</p>
-            </div>
+            <span class="footer-logo">der包</span>
+            <p class="footer-text">&copy; 2024</p>
         </div>
     </footer>
 
