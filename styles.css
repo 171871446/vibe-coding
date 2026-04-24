@@ -1,5 +1,5 @@
 /* =====================================================
-   光影志 - 摄影师个人网页
+   der包 - 个人网页
    设计风格：电影感编辑风格
    ===================================================== */
 
@@ -790,12 +790,12 @@ a {
     transition: var(--transition-smooth);
 }
 
-.work-placeholder.video {
+.work-placeholder.project {
     background: linear-gradient(135deg, #2a3f5f 0%, #4a6fa5 100%);
 }
 
-.work-placeholder.essay {
-    background: linear-gradient(135deg, #8b5a3c 0%, #c97654 100%);
+.work-placeholder.note {
+    background: linear-gradient(135deg, #3d5a3c 0%, #54a54a 100%);
 }
 
 .work-placeholder svg {
