@@ -114,7 +114,8 @@ function initScrollAnimations() {
         '.selection-item, .section-title, ' +
         '.story-lead, .story-body, .story-image, ' +
         '.contact-text, .contact-email, .section-num, ' +
-        '.gallery-scroll-controls, .blog-entry, .blog-title, .blog-excerpt, .blog-date'
+        '.gallery-scroll-controls, .blog-entry, .blog-title, .blog-excerpt, .blog-date, ' +
+        '.portfolio-item--empty, .portfolio-message'
     ).forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
@@ -157,19 +158,26 @@ function initCarousel() {
         if (!photos.length) photos = defaultPhotos.slice();
     }
 
-    function savePhotos() { localStorage.setItem(STORAGE_KEY, JSON.stringify(photos)); }
+    function savePhotos() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(photos)); } catch(e) {} }
     function esc(s) { var d = document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
 
     function renderTrack() {
         if (!photos.length) { track.innerHTML = '<p style="padding:2rem;text-align:center;color:var(--text-muted);font-weight:300;">暂无照片，点击"管理相册"添加</p>'; return; }
-        // 渲染两遍实现无缝循环
         var html = '';
         for (var repeat = 0; repeat < 2; repeat++) {
             for (var i = 0; i < photos.length; i++) {
-                html += '<div class="gallery-scroll-item"><img src="' + esc(photos[i].src) + '" alt=""></div>';
+                html += '<div class="gallery-scroll-item"><img src="' + esc(photos[i].src) + '" alt="" onerror="this.style.border=\'2px solid red\';this.style.background=\'rgba(255,0,0,0.08)\'"></div>';
             }
         }
+        // 先停动画，写入新内容，再用双帧 RAF 确保浏览器重启动画从 translateX(0) 开始
+        track.style.animation = 'none';
         track.innerHTML = html;
+        requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+                track.style.animation = 'scrollGallery 30s linear infinite';
+                track.style.animationPlayState = isPlaying ? 'running' : 'paused';
+            });
+        });
     }
 
     function togglePlay(play) {
@@ -217,7 +225,7 @@ function initCarousel() {
         addBtn.addEventListener('click', function() {
             var val = addInput.value.trim(); if (!val) return;
             var src = val.indexOf('/') === -1 && val.indexOf('\\') === -1 && val.indexOf('.') > 0 ? 'images/' + val : val;
-            photos.push({ src: src }); savePhotos(); addInput.value = ''; renderManageList(); renderTrack();
+            photos.unshift({ src: src }); savePhotos(); addInput.value = ''; renderManageList(); renderTrack();
         });
         addInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') addBtn.click(); });
     }
@@ -230,7 +238,7 @@ function initBlog() {
     var list = document.getElementById('blog-list');
     var addBtn = document.getElementById('blog-add-btn');
     var modal = document.getElementById('blog-modal');
-    var closeBtn = document.querySelector('.blog-modal-close');
+    var closeBtn = modal.querySelector('.blog-modal-close');
     var saveBtn = document.getElementById('blog-save-btn');
     var dateInput = document.getElementById('blog-input-date');
     var titleInput = document.getElementById('blog-input-title');
@@ -256,7 +264,7 @@ function initBlog() {
     }
 
     function savePosts(posts) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(posts)); } catch(e) {}
     }
 
     function renderPosts() {

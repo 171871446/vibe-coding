@@ -600,6 +600,64 @@ section {
 }
 
 /* =====================================================
+   Portfolio - 作品集
+   ===================================================== */
+.portfolio {
+    padding: 6rem 0 5rem;
+    border-top: 1px solid var(--divider);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.portfolio-item--empty {
+    aspect-ratio: 4 / 3;
+    border: 1px dashed var(--divider);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    background: rgba(255,255,255,0.3);
+}
+
+.portfolio-item--empty:hover {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.5);
+}
+
+.portfolio-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portfolio-placeholder-icon {
+    font-family: var(--font-serif);
+    font-weight: 200;
+    font-size: 2rem;
+    color: var(--divider);
+    transition: var(--transition);
+}
+
+.portfolio-item--empty:hover .portfolio-placeholder-icon {
+    color: var(--accent);
+}
+
+.portfolio-message {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    margin-top: 2.5rem;
+}
+
+/* =====================================================
    Gallery - 横向滚动
    ===================================================== */
 .gallery {
@@ -1154,6 +1212,7 @@ section {
 .footer-logo,
 .footer-text,
 .social-link,
+.portfolio-message,
 .blog-add-btn {
     text-shadow: 0 0 12px rgba(255,255,255,1), 0 0 4px rgba(255,255,255,0.9), 1px 1px 2px rgba(0,0,0,0.1);
 }
@@ -1189,7 +1248,9 @@ section {
 .blog-entry,
 .blog-title,
 .blog-excerpt,
-.blog-date {
+.blog-date,
+.portfolio-item--empty,
+.portfolio-message {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.7s ease, transform 0.7s ease;
@@ -1208,6 +1269,12 @@ section {
 .blog-title.visible,
 .blog-excerpt.visible,
 .blog-date.visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.portfolio-item--empty.visible,
+.portfolio-message.visible {
     opacity: 1 !important;
     transform: translateY(0) !important;
 }
