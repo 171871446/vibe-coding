@@ -230,6 +230,23 @@ function initCarousel() {
         addInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') addBtn.click(); });
     }
 
+    // 文件上传
+    var uploadInput = document.getElementById('gallery-upload-input');
+    var uploadBtn = document.getElementById('gallery-upload-btn');
+
+    if (uploadBtn && uploadInput) {
+        uploadBtn.addEventListener('click', function() {
+            var file = uploadInput.files[0];
+            if (!file) return;
+            if (!file.type.match(/^image\//)) { alert('请选择图片文件'); return; }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                photos.unshift({ src: e.target.result }); savePhotos(); uploadInput.value = ''; renderManageList(); renderTrack();
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
     loadPhotos(); renderTrack();
 }
 
